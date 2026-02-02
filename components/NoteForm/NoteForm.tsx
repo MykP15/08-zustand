@@ -6,6 +6,7 @@ import { useMutation, useQueryClient,} from "@tanstack/react-query"
 import { createNote } from "@/lib/api"
 import { useRouter } from "next/navigation"
 import { useNoteDraftStore } from "@/lib/store/noteStore"
+import { useState } from "react"
 import React from "react"
 
 
@@ -15,28 +16,15 @@ const noteValidationSchema = Yup.object().shape({
   tag: Yup.string().required("Tag is required")
 })
 
-interface NoteFormProps{
-  onClose: () => void
-}
 
-interface NoteFormValues{
-  title: string,
-  content: string
-  tag: string
-}
-
-const initialValues: NoteFormValues = {
-  title: "",
-  content: "",
-  tag: "Todo"
-};
-
-function NoteForm({ onClose }: NoteFormProps) {
+function NoteForm() {
 
   const router = useRouter()
 
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
   const draft = useNoteDraftStore(state => state.draft)
-  const setDraft = useNoteDraftStore(state => state.setDratft)
+  const setDraft = useNoteDraftStore(state => state.setDraft)
   const clearDraft = useNoteDraftStore(state => state.clearDraft)
   
   const queryClient = useQueryClient();
@@ -54,16 +42,35 @@ function NoteForm({ onClose }: NoteFormProps) {
     router.push(`/notes/filter/all`)
   }
 
-  function handleSubmit(formData: FormData){
-    const title = formData.get("title") as string
-    const content = formData.get("content") as string
-    const tag = formData.get("tag") as string
+  async function handleSubmit(formData: FormData){
+    const values = {
+      title: formData.get("title") as string,
+      content: formData.get("content") as string,
+      tag: formData.get("tag") as string,
+    }
 
-    createMutation.mutate({title, content, tag})
+    try {
+      await noteValidationSchema.validate(values, { abortEarly: false })
+      setErrors({})
+      createMutation.mutate(values)
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors: Record<string, string> = {}
+
+        err.inner.forEach((error) => {
+          if (error.path) {
+            validationErrors[error.path] = error.message
+          }
+        })
+
+        setErrors(validationErrors)
+      }
+    }
   }
 
   function handleCahge(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setDraft({...draft, [event.target.name]: event.target.value})
+    setDraft({ ...draft, [event.target.name]: event.target.value })
+    setErrors((prev) => ({ ...prev, [event.target.name]: "" }))
   }
 
     return (
@@ -71,7 +78,7 @@ function NoteForm({ onClose }: NoteFormProps) {
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
             <input id="title" type="text" name="title" className={css.input} onChange={handleCahge} defaultValue={draft.title}/>
-            <span className={css.error} />
+          <span className={css.error}>{errors.title}</span>
           </div>
 
           <div className={css.formGroup}>
@@ -84,7 +91,7 @@ function NoteForm({ onClose }: NoteFormProps) {
             onChange={handleCahge}
             defaultValue={draft.content}
               />
-            <span className={css.error} />
+          <span className={css.error}>{errors.content}</span>
           </div>
 
           <div className={css.formGroup}>
@@ -96,7 +103,7 @@ function NoteForm({ onClose }: NoteFormProps) {
               <option value="Meeting">Meeting</option>
               <option value="Shopping">Shopping</option>
             </select>
-            <span className={css.error} />
+            <span className={css.error}>{errors.tag}</span>
           </div>
           
           <div className={css.actions}>

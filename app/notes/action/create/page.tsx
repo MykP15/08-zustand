@@ -3,12 +3,11 @@ import CreateNoteClient from "./CreateNote.client";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Craete note - NoteHub",
+    title: "Create note - NoteHub",
     description: "Create your own note!",
-    url: "https://notehub.com/notes/action/create",
   openGraph: {
-    title: "NoteHub",
-    description: "A convenient website for managing your notes, organizing ideas, and keeping everything in one place.",
+    title: "Create Note - NoteHub",
+    description: "Create your own note!",
     url: "https://notehub.com/notes/action/create",
     images: [{
       url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
@@ -17,17 +16,19 @@ export const metadata: Metadata = {
       alt: "NoteHub",
     }]
   }
-} as Metadata
+}
 
 
 function CreateNote() {
      
     const queryClient = new QueryClient();
 
-     return (
+  return (
+       <main>
          <HydrationBoundary state={dehydrate(queryClient)}>
          <CreateNoteClient></CreateNoteClient>
-         </HydrationBoundary>
+      </HydrationBoundary>
+    </main>
     )
 }
 

@@ -4,7 +4,7 @@ import type { NewNote } from "@/lib/api";
 
 type NoteDraftStore = {
   draft: NewNote;
-  setDratft: (note: NewNote) => void;
+  setDraft: (note: NewNote) => void;
   clearDraft: () => void;
 };
 
@@ -14,15 +14,22 @@ const initialDraft = {
   tag: "Todo",
 };
 
+const createInitialDraft = (): NewNote => ({
+  title: "",
+  content: "",
+  tag: "Todo",
+});
+
 export const useNoteDraftStore = create<NoteDraftStore>()(
   persist(
     (set) => ({
       draft: initialDraft,
-      setDratft: (note) => set({ draft: note }),
-      clearDraft: () => set({ draft: initialDraft }),
+      setDraft: (note) => set({ draft: note }),
+      clearDraft: () => set({ draft: createInitialDraft() }),
     }),
     {
       name: "note-draft",
+      partialize: (state) => ({ draft: state.draft }),
     },
   ),
 );

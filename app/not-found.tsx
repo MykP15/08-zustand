@@ -4,10 +4,9 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "NoteHub - Not Found",
   description: "Not Found page.",
-  url: "https://notehub.com/not-found",
   openGraph: {
     title: "Not Found - NoteHub",
-    description: "",
+    description: "Page is not found",
     url: "https://notehub.com/not-found",
     images: [{
       url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
@@ -16,7 +15,7 @@ export const metadata: Metadata = {
       alt: "NoteHub",
     }]
   }
-} as Metadata;
+} ;
 
 
 

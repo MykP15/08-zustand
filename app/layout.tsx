@@ -9,7 +9,7 @@ import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["400"],
   display: "swap",
 });
 

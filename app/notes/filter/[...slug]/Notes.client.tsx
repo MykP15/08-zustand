@@ -6,8 +6,6 @@ import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
-import Modal from "@/components/Modal/Modal";
-import NoteForm from "@/components/NoteForm/NoteForm";
 import type { Note } from "@/types/note";
 import css from "@/app/notes/NotesPage.module.css";
 import Link from "next/link";
@@ -24,7 +22,6 @@ interface FetchNotesResponse {
 export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [isModalOpen, setModalOpen] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
 useEffect(() => {
@@ -63,12 +60,6 @@ useEffect(() => {
       </header>
 
       {data?.notes && <NoteList notes={data.notes} />}
-
-      {isModalOpen && (
-        <Modal onClose={() => setModalOpen(false)}>
-          <NoteForm onClose={() => setModalOpen(false)} />
-        </Modal>
-      )}
     </div>
   );
 }
