@@ -1,4 +1,3 @@
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query"
 import CreateNoteClient from "./CreateNote.client";
 import { Metadata } from "next";
 
@@ -19,17 +18,13 @@ export const metadata: Metadata = {
 }
 
 
-function CreateNote() {
-     
-    const queryClient = new QueryClient();
+function Page() {
 
   return (
        <main>
-         <HydrationBoundary state={dehydrate(queryClient)}>
          <CreateNoteClient></CreateNoteClient>
-      </HydrationBoundary>
     </main>
     )
 }
 
-export default CreateNote
+export default Page
