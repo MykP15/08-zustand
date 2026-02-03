@@ -12,7 +12,7 @@ import React from "react"
 
 const noteValidationSchema = Yup.object().shape({
   title: Yup.string().min(3, "Title too short").max(50, "Title too long").required("Title is required"),
-  content: Yup.string().max(500, "Message too long"),
+  content: Yup.string().max(500, "Message too long").required("Write something about your note"),
   tag: Yup.string().required("Tag is required")
 })
 
@@ -38,8 +38,8 @@ function NoteForm() {
     }
   })
 
-  function handleback() {
-    router.push(`/notes/filter/all`)
+  function handleBack() {
+    router.back()
   }
 
   async function handleSubmit(formData: FormData){
@@ -68,7 +68,7 @@ function NoteForm() {
     }
   }
 
-  function handleCahge(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+  function handleChahge(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setDraft({ ...draft, [event.target.name]: event.target.value })
     setErrors((prev) => ({ ...prev, [event.target.name]: "" }))
   }
@@ -77,7 +77,7 @@ function NoteForm() {
         <form action={handleSubmit}> 
           <div className={css.formGroup}>
             <label htmlFor="title">Title</label>
-            <input id="title" type="text" name="title" className={css.input} onChange={handleCahge} defaultValue={draft.title}/>
+            <input id="title" type="text" name="title" className={css.input} onChange={handleChahge} defaultValue={draft.title}/>
           <span className={css.error}>{errors.title}</span>
           </div>
 
@@ -88,7 +88,7 @@ function NoteForm() {
                 name="content"
                 rows={8}
             className={css.textarea}
-            onChange={handleCahge}
+            onChange={handleChahge}
             defaultValue={draft.content}
               />
           <span className={css.error}>{errors.content}</span>
@@ -96,7 +96,7 @@ function NoteForm() {
 
           <div className={css.formGroup}>
             <label htmlFor="tag">Tag</label>
-            <select id="tag" name="tag" className={css.select} onChange={handleCahge} defaultValue={draft.tag}>
+            <select id="tag" name="tag" className={css.select} onChange={handleChahge} defaultValue={draft.tag}>
               <option value="Todo">Todo</option>
               <option value="Work">Work</option>
               <option value="Personal">Personal</option>
@@ -107,7 +107,7 @@ function NoteForm() {
           </div>
           
           <div className={css.actions}>
-            <button type="button" className={css.cancelButton} onClick={handleback}>
+            <button type="button" className={css.cancelButton} onClick={handleBack}>
               Cancel
             </button>
             <button
