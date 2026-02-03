@@ -3,7 +3,7 @@
 import NoteForm from "@/components/NoteForm/NoteForm"
 import css from "@/app/notes/action/create/CreateNote.module.css"
 
-function CreateNoteClient() {
+function NoteFormClient() {
      return (
          <>    
              <main className={css.main}>
@@ -16,4 +16,4 @@ function CreateNoteClient() {
     )
 }
 
-export default CreateNoteClient
+export default NoteFormClient
