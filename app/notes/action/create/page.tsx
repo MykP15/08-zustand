@@ -22,7 +22,7 @@ function Page() {
 
   return (
        <main>
-         <CreateNoteClient></CreateNoteClient>
+         <NoteFormClient></NoteFormClient>
     </main>
     )
 }
