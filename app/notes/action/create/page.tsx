@@ -1,4 +1,4 @@
-import CreateNoteClient from "./CreateNote.client";
+import NoteFormClient from "./NoteForm.client";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
